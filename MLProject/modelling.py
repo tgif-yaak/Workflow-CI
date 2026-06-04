@@ -31,8 +31,10 @@ def main():
         mlflow.log_param("n_estimators", n_estimators)
         mlflow.log_metric("accuracy", acc)
         mlflow.sklearn.log_model(model, "model_tanah_aliya")
+        mlflow.sklearn.save_model(model, "my_model")
         
         print(f"Model berhasil dilatih! Akurasi: {acc * 100:.2f}%")
 
 if __name__ == "__main__":
     main()
+    

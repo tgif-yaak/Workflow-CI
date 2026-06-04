@@ -27,22 +27,23 @@ jobs:
         python -m pip install --upgrade pip
         pip install mlflow==2.19.0 scikit-learn pandas numpy
 
-    # 4. Jalankan training model lokal (Masuk ke folder biar Python gak bingung nyari CSV)
+    # 4. Jalankan training model lokal dan save ke folder statis
     - name: Run MLflow Project Retraining
       run: |
         cd MLProject
+        rm -rf my_model
         python modelling.py
 
-    # 5. Login otomatis ke Docker Hub menggunakan gembok rahasia
+    # 5. Login otomatis ke Docker Hub
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # 6. Build model menjadi Docker Image dan Push (Tetap di dalam folder MLProject)
+    # 6. Build model dari folder 'my_model' dan Push ke Docker Hub
     - name: Build and Push MLflow Docker Image
       run: |
         cd MLProject
-        mlflow models build-docker -m "mlruns/1/" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver
+        mlflow models build-docker -m "my_model" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver
         docker push aliyapradnya/crop_recommendation_model:latest

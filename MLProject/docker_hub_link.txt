@@ -1,0 +1,1 @@
+https://hub.docker.com/repository/docker/aliyapradnya/crop_recommendation_model/general

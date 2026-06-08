@@ -10,7 +10,11 @@ def main():
     # mlflow.set_experiment("Eksperimen_Model_Tanah_Aliya")
 
     print("Memuat data...")
-    df = pd.read_csv("crop_preprocessing.csv")
+    # Menggunakan os.path biar Python nyari lokasi file CSV tepat di sebelah file modelling.py ini berada
+    import os
+    current_dir = os.path.dirname(__file__)
+    csv_path = os.path.join(current_dir, "crop_preprocessed.csv")
+    df = pd.read_csv(csv_path)
 
     X = df.drop(columns=['label'])
     y = df['label']

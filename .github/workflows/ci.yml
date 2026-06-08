@@ -30,7 +30,7 @@ jobs:
     # 4. TAHAP BASIC: Jalankan training menggunakan mekanisme MLflow Project (Bukan python modelling.py)
     - name: Run MLflow Project Retraining
       run: |
-        mlflow run MLProject --no-conda
+        mlflow run MLProject --env-manager=local
 
     # 5. TAHAP SKILLED: Simpan dan Upload artefak hasil training ke GitHub Artifacts (Biar lulus level Skilled)
     - name: Upload Artifacts to GitHub
@@ -50,4 +50,4 @@ jobs:
     - name: Build and Push MLflow Docker Image
       run: |
         mlflow models build-docker -m "mlruns/1/" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver
-        docker push aliyapradnya/crop_recommendation_model:latest
+        docker push aliyapradnya/crop_recommendation_model:latest`

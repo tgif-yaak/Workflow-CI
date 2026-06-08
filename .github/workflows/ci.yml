@@ -50,8 +50,8 @@ jobs:
     - name: Build MLflow Docker Image
       run: |
         cd MLProject
-        mlflow models build-docker -m "mlruns/1/models:/model_tanah_aliya" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver
-    
+        mlflow models build-docker -m "runs:/${{ github.run_id }}/model_tanah_aliya" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver
+
     # 8. TAHAP ADVANCED: Push ke Docker Hub
     - name: Push Docker Image to Docker Hub
       run: |

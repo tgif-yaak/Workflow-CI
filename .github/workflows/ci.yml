@@ -46,8 +46,12 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # 7. TAHAP ADVANCED: Build Docker Image memanfaatkan fungsi bawaan MLflow & Push ke Docker Hub
-    - name: Build and Push MLflow Docker Image
+    # 7. TAHAP ADVANCED: Build Docker Image memanfaatkan fungsi bawaan MLflow
+    - name: Build MLflow Docker Image
       run: |
-        mlflow models build-docker -m "mlruns/1/" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver
-        docker push aliyapradnya/crop_recommendation_model:latest`
+        mlflow models build-docker -m "MLProject/mlruns/1/" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver
+
+    # 8. TAHAP ADVANCED: Push ke Docker Hub
+    - name: Push Docker Image to Docker Hub
+      run: |
+        docker push aliyapradnya/crop_recommendation_model:latest

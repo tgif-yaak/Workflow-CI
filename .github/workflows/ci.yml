@@ -27,23 +27,27 @@ jobs:
         python -m pip install --upgrade pip
         pip install mlflow==2.19.0 scikit-learn pandas numpy
 
-    # 4. Jalankan training model lokal dan save ke folder statis
+    # 4. TAHAP BASIC: Jalankan training menggunakan mekanisme MLflow Project (Bukan python modelling.py)
     - name: Run MLflow Project Retraining
       run: |
-        cd MLProject
-        rm -rf my_model
-        python modelling.py
+        mlflow run MLProject --no-conda
 
-    # 5. Login otomatis ke Docker Hub
+    # 5. TAHAP SKILLED: Simpan dan Upload artefak hasil training ke GitHub Artifacts (Biar lulus level Skilled)
+    - name: Upload Artifacts to GitHub
+      uses: actions/upload-artifact@v4
+      with:
+        name: hasil-model-tanah-aliya
+        path: mlruns/
+
+    # 6. Login otomatis ke Docker Hub
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # 6. Build model menggunakan Dockerfile manual dan Push ke Docker Hub
+    # 7. TAHAP ADVANCED: Build Docker Image memanfaatkan fungsi bawaan MLflow & Push ke Docker Hub
     - name: Build and Push MLflow Docker Image
       run: |
-        cd MLProject
-        docker build -t aliyapradnya/crop_recommendation_model:latest .
+        mlflow models build-docker -m "mlruns/1/" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver
         docker push aliyapradnya/crop_recommendation_model:latest

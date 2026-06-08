@@ -10,7 +10,7 @@ def main():
     mlflow.set_experiment("Eksperimen_Model_Tanah_Aliya")
 
     print("Memuat data...")
-    df = pd.read_csv("crop_preprocessing.csv")
+    df = pd.read_csv("MLProject/crop_preprocessed.csv")
 
     X = df.drop(columns=['label'])
     y = df['label']

@@ -53,7 +53,7 @@ jobs:
         MODEL_PATH=$(find MLProject/mlruns/ -name "MLmodel" -exec dirname {} \; | head -n 1)
         
         # Build Docker murni menggunakan fungsi bawaan MLflow dengan path absolut file://
-        mlflow models build-docker -m "file://${{ github.workspace }}/$MODEL_PATH" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver
+        mlflow models build-docker -m "file://${{ github.workspace }}/$MODEL_PATH" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver --env-manager=local
 
     # 8. TAHAP ADVANCED: Push ke Docker Hub
     - name: Push Docker Image to Docker Hub

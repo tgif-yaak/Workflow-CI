@@ -48,12 +48,18 @@ jobs:
 
     # 7. TAHAP ADVANCED: Build Docker Image memanfaatkan fungsi bawaan MLflow (Sesuai Kriteria)
     - name: Build MLflow Docker Image
+      env:
+        # Memaksa pip menggunakan pre-compiled wheels jadi agar tidak memicu eror kompiler di detik ke-51
+        PIP_ONLY_BINARY: ":all:"
       run: |
         # Cari otomatis di mana folder model hasil training berada di dalam MLProject
         MODEL_PATH=$(find MLProject/mlruns/ -name "MLmodel" -exec dirname {} \; | head -n 1)
         
-        # Build Docker murni menggunakan fungsi bawaan MLflow dengan path absolut file://
-        mlflow models build-docker -m "file://${{ github.workspace }}/$MODEL_PATH" -n "aliyapradnya/crop_recommendation_model:latest" --enable-mlserver --env-manager=local
+        mlflow models build-docker \
+          -m "file://${{ github.workspace }}/$MODEL_PATH" \
+          -n "aliyapradnya/crop_recommendation_model:latest" \
+          --enable-mlserver \
+          --env-manager=local
 
     # 8. TAHAP ADVANCED: Push ke Docker Hub
     - name: Push Docker Image to Docker Hub
